@@ -97,7 +97,7 @@ The following features are intentionally excluded from the MVP:
 | Layer               | Technology                   |
 | ------------------- | ---------------------------- |
 | Frontend            | TypeScript & Vue 3           |
-| Backend             | C# & .NET Core               |
+| Backend             | C# & ASP.NET Core            |
 | API                 | REST                         |
 | Document Extraction | PDF processing library (TBD) |
 | Database            | PostgreSQL (future)          |
