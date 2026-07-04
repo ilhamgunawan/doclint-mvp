@@ -6,7 +6,7 @@
 
 # Product Description
 
-**Document Format Validator**
+**PDF Document Format Validator**
 
 # Version
 
@@ -40,13 +40,16 @@ The MVP should prove that DocLint can automatically analyze a document and ident
 
 The MVP focuses on:
 
-* Uploading a document
-* Extracting document information
-* Running predefined rules
-* Generating document verification report
-* Displaying violation clearly
+* Uploading a PDF document
+* Extracting document layout and text information
+* Executing predefined lint rules
+* Generating a lint report with page locations
+* Displaying lint issues with page references
 
-The MVP does not include custom rule management, user accounts, or organization features.
+Not in scope:
+
+* Custom rule management, user accounts, or organization features.
+* Additional document format e.g. docx, planned for future improvements.
 
 ---
 
@@ -70,11 +73,11 @@ Examples:
 
 ### User Story
 
-As a user, I want to upload my document so that DocLint can analyze its formatting.
+As a user, I want to upload my PDF document so that DocLint can analyze its formatting.
 
 ### Acceptance Criteria
 
-* User can select a `.docx` file.
+* User can select a `.pdf` file.
 * System accepts supported document formats.
 * System rejects unsupported file formats.
 * User receives feedback when document is successfully uploaded.
@@ -85,11 +88,12 @@ As a user, I want to upload my document so that DocLint can analyze its formatti
 
 ### User Story
 
-As a user, I want DocLint to check my document against lint rules so that I know whether it follows the required standards.
+As a user, I want DocLint to check my PDF document against lint rules so that I know whether it follows the required standards.
 
 ### Acceptance Criteria
 
 * System analyzes the uploaded document.
+* System stores necessary document information.
 * System executes all enabled MVP lint rules.
 * System generates a lint report.
 * Linting status is shown to the user.
@@ -122,13 +126,13 @@ As a user, I want to see document lint issues so that I can fix them before subm
 
 ## Description
 
-The system allows users to upload documents for linting.
+The system allows users to upload PDF document for linting.
 
 ## Requirements
 
 Supported file type:
 
-* DOCX
+* PDF
 
 The system must:
 
@@ -146,22 +150,16 @@ DocLint extracts document information required for lint rules.
 
 ## Extracted Information
 
-### Document Properties
+### Document Model
 
-* File name
-* Page count
-* Document metadata (if available)
+For each PDF, DocLint extracts:
 
-### Page Layout
-
-* Page size
-* Margins
-* Orientation
-
-### Text Formatting
-
-* Font family
-* Font size
+* Document metadata
+* Pages
+* Text blocks
+* Font information
+* Text positions
+* Bounding boxes
 
 ---
 
@@ -173,6 +171,14 @@ Lint rules define the standards that a document must follow.
 
 The MVP uses predefined lint rules implemented by the system.
 
+Every lint rule should return:
+
+* Page
+* Rule
+* Expected
+* Actual
+* Message
+
 ---
 
 ## Lint Rule 1: Font Family
@@ -182,6 +188,12 @@ The MVP uses predefined lint rules implemented by the system.
 Verify that document text uses the required font family.
 
 Example:
+
+Page:
+
+```
+2
+```
 
 Expected:
 
@@ -209,6 +221,12 @@ Verify that document text uses the required font size.
 
 Example:
 
+Page:
+
+```
+2
+```
+
 Expected:
 
 ```
@@ -235,6 +253,12 @@ Verify that document margins meet required standards.
 
 Example:
 
+Page:
+
+```
+2
+```
+
 Expected:
 
 ```
@@ -246,30 +270,60 @@ Right: 3cm
 
 ---
 
-## Lint Rule 4: Required Section
+## Lint Rule 4: Page Size
 
 ### Purpose
 
-Verify that required document sections exist.
+Verify that document page size meet required standards.
 
 Example:
 
-Required sections:
+Page:
 
 ```
-Abstract
-Introduction
-Conclusion
+2
 ```
 
-Result:
+Expected:
 
 ```
-Pass:
-All sections found
+Width: 595 pt
+Height: 842 pt
+```
 
-Issue:
-Missing Conclusion section
+Actual:
+
+```
+Width: 600 pt
+Height: 900 pt
+```
+
+---
+
+## Lint Rule 5: Page Orientation
+
+### Purpose
+
+Verify that document page orientation meet required standards.
+
+Example:
+
+Page:
+
+```
+2
+```
+
+Expected:
+
+```
+Portrait
+```
+
+Actual:
+
+```
+Landscape
 ```
 
 ---
@@ -288,13 +342,10 @@ Example:
 
 ```
 Document:
-Thesis.docx
+Thesis.pdf
 
 Lint Status:
 FAILED
-
-Passed:
-3
 
 Issues:
 2
@@ -309,6 +360,9 @@ Each lint issue contains:
 ```
 Rule:
 Font Size
+
+Page:
+2
 
 Status:
 Failed
@@ -370,7 +424,7 @@ The following features are excluded:
 
 The MVP is successful when:
 
-1. A user can upload a DOCX document.
+1. A user can upload a PDF document.
 2. DocLint can analyze the document.
 3. At least five lint rules can be executed.
 4. A lint report is generated successfully.
@@ -385,7 +439,7 @@ Potential future features:
 
 * Custom lint rule builder
 * Organization-specific document standards
-* PDF support
+* DOCX support
 * Document preview with highlighted lint issues
 * Exportable lint reports
 * User accounts
