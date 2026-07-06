@@ -27,7 +27,7 @@ The API follows REST principles and is resource-oriented.
 Example:
 
 ```text
-POST /api/v1/documents/lint
+GET /api/v1/resources/{resourceId}/sub-resources?query=
 ```
 
 ---
