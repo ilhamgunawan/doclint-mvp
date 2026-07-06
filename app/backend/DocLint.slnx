@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DocLint.Application/DocLint.Application.csproj" />
+    <Project Path="src/DocLint.Domain/DocLint.Domain.csproj" />
+    <Project Path="src/DocLint.Infrastructure/DocLint.Infrastructure.csproj" />
+    <Project Path="src/DocLint.WebAPI/DocLint.WebAPI.csproj" />
+  </Folder>
+</Solution>
