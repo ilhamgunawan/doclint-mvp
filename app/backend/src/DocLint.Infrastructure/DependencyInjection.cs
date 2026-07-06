@@ -1,6 +1,7 @@
 using DocLint.Application.Interfaces;
 using DocLint.Infrastructure.Data;
 using DocLint.Infrastructure.Repositories;
+using DocLint.Infrastructure.Services.DocumentProcessing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ public static class DependencyInjection
 
         services.AddScoped<IDocumentRepository, DocumentRepository>();
         services.AddScoped<ILintReportRepository, LintReportRepository>();
+        services.AddScoped<IPdfDocumentExtractor, PdfPigDocumentExtractor>();
 
         return services;
     }

@@ -11,31 +11,36 @@ public class DocumentService : IDocumentService
     private readonly IDocumentRepository _documentRepository;
     private readonly ILintReportRepository _lintReportRepository;
     private readonly IMapper _mapper;
+    private readonly IPdfDocumentExtractor _pdfExtractor;
 
     public DocumentService(
         IDocumentRepository documentRepository,
         ILintReportRepository lintReportRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IPdfDocumentExtractor pdfExtractor)
     {
         _documentRepository = documentRepository;
         _lintReportRepository = lintReportRepository;
         _mapper = mapper;
+        _pdfExtractor = pdfExtractor;
     }
 
     public async Task<LintReportDto> LintDocumentAsync(Stream fileStream, string fileName, CancellationToken cancellationToken = default)
     {
+        var metadata = await _pdfExtractor.ExtractMetadataAsync(fileStream, cancellationToken);
+
         var document = new Document
         {
             Id = Guid.NewGuid(),
             FileName = fileName,
             FileSize = fileStream.Length,
             MimeType = "application/pdf",
-            PageCount = 0,
-            PageSize = string.Empty,
-            Orientation = string.Empty
+            PageCount = metadata.PageCount,
+            PageSize = metadata.PageSize,
+            Orientation = metadata.Orientation
         };
 
-        await _documentRepository.AddAsync(document, cancellationToken);
+        // await _documentRepository.AddAsync(document, cancellationToken);
 
         var report = new LintReport
         {
@@ -46,8 +51,19 @@ public class DocumentService : IDocumentService
             IssueCount = 0
         };
 
-        await _lintReportRepository.AddAsync(report, cancellationToken);
+        // await _lintReportRepository.AddAsync(report, cancellationToken);
 
-        return _mapper.Map<LintReportDto>(report);
+        var lintReport = new LintReportDto
+        {
+            Document = _mapper.Map<DocumentDto>(document),
+            Summary = new SummaryDto
+            {
+                Status = report.Status.ToString(),
+                RuleCount = report.RuleCount,
+                IssueCount = report.IssueCount,
+            },
+        };
+
+        return lintReport;
     }
 }
