@@ -6,7 +6,7 @@
       </h3>
       <Tag
         :value="summary.status"
-        :severity="summary.status === 'PASSED' ? 'success' : 'danger'"
+        :severity="summary.status === 'Passed' ? 'success' : 'danger'"
       />
     </div>
     <div class="grid grid-cols-2 gap-4 text-sm">

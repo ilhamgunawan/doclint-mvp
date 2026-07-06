@@ -23,14 +23,14 @@ export interface LintIssue {
 }
 
 export interface Summary {
-  status: 'PASSED' | 'FAILED'
+  status: 'Passed' | 'Failed'
   ruleCount: number
   issueCount: number
 }
 
 export interface RuleResult {
   rule: string
-  status: 'PASSED' | 'FAILED'
+  status: 'Passed' | 'Failed'
   issueCount: number
 }
 
