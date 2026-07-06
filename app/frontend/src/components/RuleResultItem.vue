@@ -11,7 +11,7 @@
       <span class="text-xs text-gray-400">{{ result.issueCount }} issue{{ result.issueCount !== 1 ? 's' : '' }}</span>
       <Tag
         :value="result.status"
-        :severity="result.status === 'PASSED' ? 'success' : 'danger'"
+        :severity="result.status === 'Passed' ? 'success' : 'danger'"
       />
     </div>
   </div>
@@ -27,7 +27,7 @@ const props = defineProps<{
 }>()
 
 const iconClass = computed(() =>
-  props.result.status === 'PASSED'
+  props.result.status === 'Passed'
     ? 'pi pi-check-circle text-green-500'
     : 'pi pi-times-circle text-red-500',
 )
