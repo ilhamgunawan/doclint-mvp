@@ -1,18 +1,18 @@
 <template>
-  <div 
+  <div
     class="rounded-md border-l-4 px-4 py-3"
-    :class="{ 
+    :class="{
       'border-red-400 bg-red-50': issue.severity === 'Error',
       'border-yellow-400 bg-yellow-50': issue.severity === 'Warning',
     }"
   >
     <div class="mb-1 flex items-center justify-between">
       <span class="text-sm font-semibold text-gray-800">
-        Page {{ issue.page }} &mdash; {{ issue.rule.name }}
+        {{ issue.rule.name }}
       </span>
       <Tag
         :value="issue.severity"
-        severity="warn"
+        :severity="issue.severity === 'Error' ? 'danger' : 'warn'"
       />
     </div>
     <p class="text-sm text-gray-600">

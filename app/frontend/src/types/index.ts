@@ -22,6 +22,11 @@ export interface LintIssue {
   message: string
 }
 
+export interface PageIssues {
+  page: number
+  issues: LintIssue[]
+}
+
 export interface Summary {
   status: 'Passed' | 'Failed'
   ruleCount: number

@@ -227,10 +227,23 @@ LintStore
 ├── summary
 ├── ruleResults
 ├── issues
+├── issuesByPage
 ├── isUploading
 ├── isLinting
 └── error
 ```
+
+## Issues by Page
+
+Issues are presented per page to improve readability, easier for user to navigate and understand.
+
+```ts
+issuesByPage = {
+  page: number;
+  issues: LintIssue[];
+}[]
+```
+
 
 ---
 

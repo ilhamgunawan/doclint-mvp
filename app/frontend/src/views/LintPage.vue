@@ -19,7 +19,10 @@
 
       <RuleResultList :results="store.ruleResults" />
 
-      <IssueList :issues="store.issues" />
+      <IssueList
+        :issues="store.issues"
+        :issues-by-page="store.issuesByPage"
+      />
     </template>
 
     <LoadingOverlay

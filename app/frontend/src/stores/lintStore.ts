@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import type { Document, Summary, RuleResult, LintIssue } from '../types'
+import { ref, computed } from 'vue'
+import type { Document, Summary, RuleResult, LintIssue, PageIssues } from '../types'
 import { lintDocument, ApiRequestError } from '../services/documentService'
 
 export const useLintStore = defineStore('lint', () => {
@@ -11,6 +11,19 @@ export const useLintStore = defineStore('lint', () => {
   const isUploading = ref(false)
   const isLinting = ref(false)
   const error = ref<string | null>(null)
+
+  const issuesByPage = computed<PageIssues[]>(() => {
+    const map = new Map<number, LintIssue[]>()
+    for (const issue of issues.value) {
+      if (!map.has(issue.page)) {
+        map.set(issue.page, [])
+      }
+      map.get(issue.page)!.push(issue)
+    }
+    return Array.from(map.entries())
+      .map(([page, pageIssues]) => ({ page, issues: pageIssues }))
+      .sort((a, b) => a.page - b.page)
+  })
 
   async function lint(file: File) {
     error.value = null
@@ -65,6 +78,7 @@ export const useLintStore = defineStore('lint', () => {
     summary,
     ruleResults,
     issues,
+    issuesByPage,
     isUploading,
     isLinting,
     error,
