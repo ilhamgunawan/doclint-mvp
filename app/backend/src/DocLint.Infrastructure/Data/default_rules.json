@@ -1,0 +1,118 @@
+{
+  "rules": [
+    {
+      "id": 1,
+      "name": "Cover Font",
+      "type": "font",
+      "constraints": {
+        "fontFamily": "arial",
+        "fontSize": {
+          "value": 14,
+          "unit": "pt"
+        }
+      },
+      "pageSelector": {
+        "type": "range",
+        "start": 1,
+        "end": 1
+      },
+      "severity": "warning",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "name": "Content Font",
+      "type": "font",
+      "constraints": {
+        "fontFamily": "arial",
+        "fontSize": {
+          "value": 12,
+          "unit": "pt"
+        }
+      },
+      "pageSelector": {
+        "type": "range",
+        "start": 2,
+        "end": null
+      },
+      "severity": "error",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "name": "Cover Page Margin",
+      "type": "page_margin",
+      "constraints": {
+        "top": {
+          "value": 12,
+          "unit": "cm"
+        },
+        "bottom": {
+          "value": 12,
+          "unit": "cm"
+        },
+        "left": {
+          "value": 10,
+          "unit": "cm"
+        },
+        "right": {
+          "value": 10,
+          "unit": "cm"
+        }
+      },
+      "pageSelector": {
+        "type": "range",
+        "start": 1,
+        "end": 1
+      },
+      "severity": "error",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "name": "Page Size",
+      "type": "page_size",
+      "constraints": {
+        "width": {
+          "value": 595,
+          "unit": "pt"
+        },
+        "height": {
+          "value": 842,
+          "unit": "pt"
+        }
+      },
+      "pageSelector": {
+        "type": "all"
+      },
+      "severity": "warning",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "name": "Page Orientation",
+      "type": "page_orientation",
+      "constraints": {
+        "orientation": "portrait"
+      },
+      "pageSelector": {
+        "type": "all"
+      },
+      "severity": "error",
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "name": "Page Orientation",
+      "type": "page_orientation",
+      "constraints": {
+        "orientation": "landscape"
+      },
+      "pageSelector": {
+        "type": "all"
+      },
+      "severity": "error",
+      "isActive": false
+    }
+  ]
+}
