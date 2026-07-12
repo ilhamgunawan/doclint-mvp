@@ -1,4 +1,6 @@
+using System.Text.Json;
 using DocLint.Application.Interfaces;
+using DocLint.Application.Models;
 using DocLint.Infrastructure.Data;
 using DocLint.Infrastructure.Repositories;
 using DocLint.Infrastructure.Services.DocumentProcessing;
@@ -17,7 +19,21 @@ public static class DependencyInjection
 
         services.AddScoped<IDocumentRepository, DocumentRepository>();
         services.AddScoped<ILintReportRepository, LintReportRepository>();
-        services.AddScoped<IPdfDocumentExtractor, PdfPigDocumentExtractor>();
+        services.AddScoped<IDocumentExtractor, PdfPigDocumentExtractor>();
+
+        var rulesPath = Path.Combine(AppContext.BaseDirectory, "Configuration", "default_rules.json");
+        if (File.Exists(rulesPath))
+        {
+            var json = File.ReadAllText(rulesPath);
+            var collection = JsonSerializer.Deserialize<RuleCollection>(json);
+            if (collection?.Rules != null)
+            {
+                foreach (var rule in collection.Rules)
+                {
+                    services.AddSingleton(rule);
+                }
+            }
+        }
 
         return services;
     }

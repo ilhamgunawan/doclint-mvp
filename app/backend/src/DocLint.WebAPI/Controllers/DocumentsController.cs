@@ -25,7 +25,7 @@ public class DocumentsController : ControllerBase
             return BadRequest(new { error = new { code = "INVALID_FILE", message = "Only PDF files are supported." } });
 
         using var stream = file.OpenReadStream();
-        var result = await _documentService.LintDocumentAsync(stream, file.FileName, cancellationToken);
+        var result = await _documentService.LintDocumentAsync(stream, file.FileName, file.ContentType, file.Length, cancellationToken);
 
         return Ok(result);
     }
