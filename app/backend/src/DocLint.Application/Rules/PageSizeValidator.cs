@@ -10,23 +10,25 @@ public class PageSizeValidator : IRuleValidator
     public IReadOnlyList<LintIssueInfo> Validate(RuleDefinition rule, DocumentModel document, IReadOnlyList<PageModel> targetPages)
     {
         var issues = new List<LintIssueInfo>();
-        var c = rule.Constraints;
+        var expected = rule.Constraints.Size;
         var severity = ParseSeverity(rule.Severity);
 
-        var expectedWidth = c.Width != null ? UnitConverter.ToPoints(c.Width.Value, c.Width.Unit) : 0;
-        var expectedHeight = c.Height != null ? UnitConverter.ToPoints(c.Height.Value, c.Height.Unit) : 0;
+        if (string.IsNullOrWhiteSpace(expected))
+            return issues;
 
         foreach (var page in targetPages)
         {
-            if (Math.Abs(page.Width - expectedWidth) > 0.5 || Math.Abs(page.Height - expectedHeight) > 0.5)
+            var actual = page.Size;
+
+            if (string.IsNullOrWhiteSpace(actual) || !actual.Equals(expected, StringComparison.OrdinalIgnoreCase))
             {
                 issues.Add(new LintIssueInfo
                 {
                     Severity = severity,
                     PageNumber = page.PageNumber,
-                    Expected = $"Page size: {expectedWidth:F0} x {expectedHeight:F0} pt",
-                    Actual = $"{page.Width:F0} x {page.Height:F0} pt",
-                    Message = $"Page {page.PageNumber} has size {page.Width:F0} x {page.Height:F0} pt, expected {expectedWidth:F0} x {expectedHeight:F0} pt."
+                    Expected = expected,
+                    Actual = actual ?? "Unknown",
+                    Message = $"Page {page.PageNumber} has size {actual ?? "Unknown"}, expected {expected}."
                 });
             }
         }

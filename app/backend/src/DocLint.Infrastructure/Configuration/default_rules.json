@@ -44,20 +44,20 @@
       "type": "page_margin",
       "constraints": {
         "top": {
-          "value": 12,
-          "unit": "cm"
+          "value": 2,
+          "unit": "in"
         },
         "bottom": {
-          "value": 12,
-          "unit": "cm"
+          "value": 2,
+          "unit": "in"
         },
         "left": {
-          "value": 10,
-          "unit": "cm"
+          "value": 1,
+          "unit": "in"
         },
         "right": {
-          "value": 10,
-          "unit": "cm"
+          "value": 1,
+          "unit": "in"
         }
       },
       "pageSelector": {
@@ -73,14 +73,7 @@
       "name": "Page Size",
       "type": "page_size",
       "constraints": {
-        "width": {
-          "value": 595,
-          "unit": "pt"
-        },
-        "height": {
-          "value": 842,
-          "unit": "pt"
-        }
+        "size": "A4"
       },
       "pageSelector": {
         "type": "all"

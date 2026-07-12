@@ -9,6 +9,9 @@ public class PdfPigMapper
         var pages = pageContents.Select(pc => new PageModel
         {
             PageNumber = pc.PageNumber,
+            Width = pc.Width,
+            Height = pc.Height,
+            Size = pc.Size,
             TextBlocks = pc.TextBlocks.Select(tb => new TextBlockModel
             {
                 Text = tb.Text,

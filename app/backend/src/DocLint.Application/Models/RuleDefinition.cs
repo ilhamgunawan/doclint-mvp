@@ -58,6 +58,9 @@ public class RuleConstraints
     [JsonPropertyName("height")]
     public ConstraintValue? Height { get; set; }
 
+    [JsonPropertyName("size")]
+    public string? Size { get; set; }
+
     [JsonPropertyName("orientation")]
     public string? Orientation { get; set; }
 }

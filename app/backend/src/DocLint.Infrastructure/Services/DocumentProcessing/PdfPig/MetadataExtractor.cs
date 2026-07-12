@@ -4,21 +4,6 @@ namespace DocLint.Infrastructure.Services.DocumentProcessing.PdfPig;
 
 public class MetadataExtractor
 {
-    private static readonly (string Name, double Width, double Height)[] KnownSizes =
-    {
-        ("A0", 2383.94, 3370.39),
-        ("A1", 1683.78, 2383.94),
-        ("A2", 1190.55, 1683.78),
-        ("A3", 841.89, 1191.10),
-        ("A4", 595.28, 841.89),
-        ("A5", 419.53, 595.28),
-        ("A6", 297.64, 419.53),
-        ("Letter", 612, 792),
-        ("Legal", 612, 1008),
-        ("Tabloid", 792, 1224),
-        ("Executive", 522, 756),
-    };
-
     private const double Tolerance = 5.0;
 
     public DocumentMetadata Extract(PdfDocument document)
@@ -29,46 +14,35 @@ public class MetadataExtractor
         for (var i = 1; i <= pageCount; i++)
         {
             var page = document.GetPage(i);
-            pageSizes.Add(new PageSizeInfo { Width = page.Width, Height = page.Height });
+            pageSizes.Add(new PageSizeInfo { Width = (double)page.Width, Height = (double)page.Height });
         }
 
         return new DocumentMetadata
         {
             PageCount = pageCount,
-            PageSize = GetMostCommonPageSize(pageSizes),
+            PageSize = GetMostCommonPageSize(document),
             Orientation = DetermineOrientation(pageSizes),
             PageSizes = pageSizes
         };
     }
 
-    private static string GetMostCommonPageSize(List<PageSizeInfo> pageSizes)
+    private static string GetMostCommonPageSize(PdfDocument document)
     {
-        if (pageSizes.Count == 0)
+        if (document.NumberOfPages == 0)
             return "Unknown";
 
-        var normalized = pageSizes.Select(s => NormalizeSize(s.Width, s.Height)).ToList();
-        var mostCommon = normalized
-            .GroupBy(s => GetPaperSizeName(s.Width, s.Height))
-            .OrderByDescending(g => g.Count())
-            .First();
+        var sizes = new List<string>(document.NumberOfPages);
 
-        return mostCommon.Key;
-    }
-
-    private static (double Width, double Height) NormalizeSize(double width, double height)
-    {
-        return width <= height ? (width, height) : (height, width);
-    }
-
-    private static string GetPaperSizeName(double width, double height)
-    {
-        foreach (var (name, knownWidth, knownHeight) in KnownSizes)
+        for (var i = 1; i <= document.NumberOfPages; i++)
         {
-            if (Math.Abs(width - knownWidth) <= Tolerance && Math.Abs(height - knownHeight) <= Tolerance)
-                return name;
+            var page = document.GetPage(i);
+            sizes.Add(page.Size.ToString());
         }
 
-        return $"Custom ({width:F0} x {height:F0})";
+        return sizes
+            .GroupBy(s => s)
+            .OrderByDescending(g => g.Count())
+            .First().Key;
     }
 
     private static string DetermineOrientation(List<PageSizeInfo> pageSizes)

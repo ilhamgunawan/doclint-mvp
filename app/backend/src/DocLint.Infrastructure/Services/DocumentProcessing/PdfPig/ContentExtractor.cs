@@ -36,6 +36,9 @@ public class ContentExtractor
             pages.Add(new PageContent
             {
                 PageNumber = i,
+                Width = (double)page.Width,
+                Height = (double)page.Height,
+                Size = page.Size.ToString(),
                 Text = page.Text,
                 TextBlocks = textBlocks
             });
