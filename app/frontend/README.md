@@ -49,3 +49,32 @@ Run unit tests with coverage:
 ```bash
 npm run test:ci
 ```
+
+### Adding New Test
+
+Place test files alongside the source file they test using a `.test.ts` suffix. For example, `src/services/documentService.ts` → `src/services/documentService.test.ts`.
+
+```ts
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+
+// Hoist mock factories before vi.mock calls
+const { mockFn } = vi.hoisted(() => ({
+  mockFn: vi.fn(),
+}))
+
+vi.mock('../path/to/module', () => ({
+  exportName: mockFn,
+}))
+
+beforeEach(() => {
+  vi.clearAllMocks()
+})
+
+describe('featureName', () => {
+  it('works correctly', () => {
+    mockFn.mockReturnValue(42)
+    const result = someFunction()
+    expect(result).toBe(42)
+  })
+})
+```
